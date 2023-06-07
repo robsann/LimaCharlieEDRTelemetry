@@ -5,3 +5,5 @@
 - Create Detection & Response Rules in LimaCharlie (EDR) to detect:
     - LSASS access
     - Shadow Copies deletion using vssadmin.exe
+
+## TO BE UPDATED
