@@ -450,8 +450,8 @@ PS\> C:\Users\User\Downloads\[your_C2-implant].exe
 1. Return to your **Sliver server console**, back into your **C2 session**, and **rerun our same procdump command** from the beginning of this post.
     1. If at some point your **C2 session dies**, just **relaunch your malware** with the steps in **Step 7**.
 2. **After rerunning the procdump command**, go to the **Detections** tab on the **LimaCharlie** main left-side menu:
-    1. If you are still in the **context** of your **sensor**, click **Back to Sensors** at the top of the menu, then you will see the **Detections** option.
-    2. You’ve just **detected a threat** with your own **detection signature**! Expand a detection to see the raw event
+    1. On **Category** select **LSASS access** and select any event.
+    2. You’ve just **detected a threat** with your own **detection signature!** Expand a detection to see the raw event.
     3. Notice you can also go straight to the **timeline** where this event occurred by clicking **View Event Timeline** from the Detection entry.
 
 # Volume Shadow Copies Deletion Using vssadmin
@@ -462,7 +462,7 @@ PS\> C:\Users\User\Downloads\[your_C2-implant].exe
 \> vssadmin delete shadows /all
 ```
 
-## Step 12: Let’s Attack and Detect It!
+## Step 12: Let’s Perform the Attack
 1. Get back onto an **SSH session on the Linux VM**, and drop into a **C2 session on your victim**:
     1. Retrace your steps from **Step 7** if need be.
     2. If you have issues reestablishing your **HTTP listener**, try rebooting your Ubuntu system.
@@ -480,7 +480,9 @@ PS C:\Windows\system32> vssadmin delete shadows /all
 ```
 PS C:\Windows\system32> whoami
 ```
-5. Browse over to **LimaCharlie’s Detections** tab to see if **default Sigma rules** picked up on our shenanigans.
+
+## Step 13: Let’s Create the Detection Rule
+5. Browse over to **LimaCharlie’s Detections** tab to see if **default Sigma rules** picked up on our attack.
 6. Click to expand the **detection** and examine all of the **metadata** contained within the detection itself. One of the great things about **Sigma rules** is they are enriched with references to help you understand why the detection exists in the first place.
     1. One of the reference URLs contains a **YARA signature** (https://github.com/Neo23x0/Raccine/blob/20a569fa21625086433dcce8bb2765d0ea08dcb6/yara/gen_ransomware_command_lines.yar) written by **Florian Roth** that contains several more possible command lines that we’d want to consider in a very robust detection rule.
 7. View the offending event in the **Timeline** to see the **raw event** that generated this detection.
@@ -499,7 +501,7 @@ PS C:\Windows\system32> whoami
     3. The **action: task** (https://doc.limacharlie.io/docs/documentation/b43d922abb409-reference-actions#task) section is what is responsible for killing the parent process responsible with **deny_tree** (https://doc.limacharlie.io/docs/documentation/819e855933d6c-reference-commands#deny_tree) for the **vssadmin delete shadows /all command**.
 10. Test the event and save your rule with the following name: **vss_deletion_kill_it**
 
-## Step 13: Let’s Block It!
+## Step 14: Let’s Detect the Attack and Block It!
 1. Run the command to **delete volume shadows**:
 ```
 PS C:\Windows\system32> vssadmin delete shadows /all
