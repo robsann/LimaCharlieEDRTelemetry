@@ -16,80 +16,80 @@ The procedures to build this Lab can be found [here](https://github.com/robsann/
 
 # Highlights
 
-## Pre Setup
+## 1 - Pre Setup
 
-### VirtualBox NAT Network with Port Forwarding configuration
+### 1.1 - VirtualBox NAT Network with Port Forwarding configuration
 <img src="images/0a-virtualbox_nat_network.png" title="NAT Network"/>
 
-### Network configuration of Ubuntu Server (10.0.2.4) and Windows 11 (10.0.2.5)
+### 1.2 - Network configuration of Ubuntu Server (10.0.2.4) and Windows 11 (10.0.2.5)
 <img src="images/0b-network_config.png" title="Network Configuration"/>
 
-### Windows 11 Virus & threat protection disabled
+### 1.3 - Windows 11 Virus & threat protection disabled
 <img src="images/0c-win_security_disabled.png" title="Windows Security Disabled"/>
 
-### Windows 11 Sysmon events
+### 1.4 - Windows 11 Sysmon events
 <img src="images/0d-sysmon_events.png" title="Sysmon Events"/>
 
-## Payload generation and C2 session establishment
+## 2 - Payload generation and C2 session establishment
 
-### Payload generation on Sliver on the Attack Machine
+### 2.1 - Payload generation on Sliver on the Attack Machine
 <img src="images/1-sliver_payload_gen.png" title="Payload Generation"/>
 
-### LimaCharlied Timeline event of the payload download on Windows Machine
+### 2.2 - LimaCharlied Timeline event of the payload download on Windows Machine
 <img src="images/2a-LC_win_payload_download.png" title="Payload Download"/>
 
-### LimaCharlied Timeline event of the payload execution on Windows Machine
+### 2.3 - LimaCharlied Timeline event of the payload execution on Windows Machine
 <img src="images/2b-LC_win_payload_exec.png" title="Payload Execution"/>
 
-### LimaCharlied Timeline event of the payload connection to the Sliver C2
+### 2.4 - LimaCharlied Timeline event of the payload connection to the Sliver C2
 <img src="images/2c-LC_payload_connect_to_C2.png" title="Payload Connection"/>
 
-### Sliver C2 session on Attack Machine
+### 2.5 - Sliver C2 session on Attack Machine
 <img src="images/3-sliver_session.png" title="Sliver C2 Session"/>
 
-### LimaCharlie Processes showing the processes running on the Windows Machine including the payload `CURLY_DRAWER.exe`
+### 2.6 - LimaCharlie Processes showing the processes running on the Windows Machine including the payload `CURLY_DRAWER.exe`
 <img src="images/4-LC_processes.png" title="Windows Processes"/>
 
-## LSASS Access event, rule creation, and detection
+## 3 - LSASS Access event, rule creation, and detection
 
-### LimaCharlie Timeline showing LSASS access event
+### 3.1 - LimaCharlie Timeline showing LSASS access event
 <img src="images/5a-LC_lsass_access_event.png" title="LSASS Access Event"/>
 
-### LimaCharlie Custom Detect & Respond Rule for LSASS Access
+### 3.2 - LimaCharlie Custom Detect & Respond Rule for LSASS Access
 <img src="images/5b-LC_lsass_access_rule.png" title="LSASS Access Rule"/>
 
-### LimaCharlie Detections showing LSASS access detected by custom rule created
+### 3.3 - LimaCharlie Detections showing LSASS access detected by custom rule created
 <img src="images/5c-LC_lsass_access_detected.png" title="LSASS Access Detected"/>
 
-## Shadows Copies deletion event, rule creation, and detection
+## 4 - Shadows Copies deletion event, rule creation, and detection
 
-### LimaCharlie Timeline showing delete Shadows Copies event
+### 4.1 - LimaCharlie Timeline showing delete Shadows Copies event
 <img src="images/6a-LC_delete_shadows_event.png" title="Delete Shadows Copie Event"/>
 
-### LimaCharlie Custom Detect & Respond Rule for delete Shadows Copies
+### 4.2 - LimaCharlie Custom Detect & Respond Rule for delete Shadows Copies
 <img src="images/6b-LC_delete_shadows_rule.png" title="Delete Shadows Copie Rule"/>
 
-### LimaCharlie Detections showing delete Shadows Copies detected by custom rule created
+### 4.3 - LimaCharlie Detections showing delete Shadows Copies detected by custom rule created
 <img src="images/6c-LC_delete_shadows_detected.png" title="Delete Shadows Copie Detected"/>
 
-## Rules pre-loaded on LimaCharlie
+## 5 - Rules pre-loaded on LimaCharlie
 
-### LimaCharlie Detections showing Sigma rule at category Non Interactive PowerShell Process Spawned
+### 5.1 - LimaCharlie Detections showing Sigma rule at category Non Interactive PowerShell Process Spawned
 - Author: Roberto Rodriguez @Cyb3rWard0g (rule), oscd.community (improvements)
 - Description: Detects non-interactive PowerShell activity by looking at the "powershell" process with a non-user GUI process such as "explorer.exe" as a parent."
 <img src="images/7a-LC_non_interactive_powershell_detected.png" title="Non Interactive Powershell Detected"/>
 
-### LimaCharlie Detections showing rule from the category HackTool - Sliver C2 Implant Acrivity Pattern
+### 5.2 - LimaCharlie Detections showing rule from the category HackTool - Sliver C2 Implant Acrivity Pattern
 - Author: Nasreddine Bencherchali (Nextron Systems), Florian Roth (Nextron Systems)
 - Description: Detects process activity patterns as seen being used by Sliver C2 framework implants.
 <img src="images/7b-LC_sliver_C2_implant_activity_detected.png" title="Sliver C2 Implant Activity Detected"/>
 
-### LimaCharlie Detections showing rule from the category Silver Shell
+### 5.3 - LimaCharlie Detections showing rule from the category Silver Shell
 - Author: Trenton Tait.
 - Description: Detects the powershell command used when a Sliver agent creates an interactive shell with its built in shell command.
 <img src="images/7c-LC_sliver_shell_detected.png" title="Sliver C2 Shell Detected"/>
 
-### LimaCharlie Detections showing Sigma rule from the category Shadow Copies Deletion Using Operating System Utilities
+### 5.4 - LimaCharlie Detections showing Sigma rule from the category Shadow Copies Deletion Using Operating System Utilities
 - Author: Florian Roth (Nextron Systems), Michael Haag, Teymur Kheirkhabarov, Daniil Yugoslavskiy, oscd.community, Andreas Hunkeler (@Karneades).
 - Description: Shadow Copies deletion using operating systems utilities.
 <img src="images/7d-LC_shadow_copies_deletion_detected.png" title="Shadow Copies Deletion Detected"/>
