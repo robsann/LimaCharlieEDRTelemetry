@@ -41,6 +41,8 @@ The procedures to build this Lab can be found [here](https://github.com/robsann/
 ### LimaCharlie Processes showing the processes running on the Windows Machine including the payload `CURLY_DRAWER.exe`
 <img src="images/4-LC_processes.png" title="Windows Processes"/>
 
+## LSASS Access detection
+
 ### LimaCharlie Timeline showing LSASS access event
 <img src="images/5a-LC_lsass_access_event.png" title="LSASS Access Event"/>
 
@@ -50,6 +52,8 @@ The procedures to build this Lab can be found [here](https://github.com/robsann/
 ### LimaCharlie Detections showing LSASS access detected by custom rule created
 <img src="images/5c-LC_lsass_access_detected.png" title="LSASS Access Detected"/>
 
+## Shadows Copies deletion detection
+
 ### LimaCharlie Timeline showing delete Shadows Copies event
 <img src="images/6a-LC_delete_shadows_event.png" title="Delete Shadows Copie Event"/>
 
@@ -58,6 +62,8 @@ The procedures to build this Lab can be found [here](https://github.com/robsann/
 
 ### LimaCharlie Detections showing delete Shadows Copies detected by custom rule created
 <img src="images/6c-LC_delete_shadows_detected.png" title="Delete Shadows Copie Detected"/>
+
+## Rules pre-loaded on LimaCharlie
 
 ### LimaCharlie Detections showing Sigma rule at category Non Interactive PowerShell Process Spawned
 - Author: Roberto Rodriguez @Cyb3rWard0g (rule), oscd.community (improvements)
