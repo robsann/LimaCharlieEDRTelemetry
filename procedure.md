@@ -32,7 +32,7 @@
                     - **Host Port:** 2200
                     - **Guest IP:** 10.0.2.4
                     - **Guest Port:** 22
-                    - **NOTE:** The **Port Forwarding** will be used to connect the **Host Machine (127.0.0.1:2200)** to the **VM (10.0.2.4:22)** by **SSH**.
+                    - **NOTE:** The **Port Forwarding** will redirect the to connections to **127.0.0.1:2200 (Host Machine)** to **10.0.2.4:22 (VM)**.
     3. Once downloaded, create a new **VM** in **VirtualBox Manager** with the following specs:
         1. Customize Hardware:
             1. **Memory size:** 2GB RAM
