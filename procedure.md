@@ -14,31 +14,47 @@
     2. Take notice of the **Expiration date of your VM**, it will stop working after this date, but you can always download a new one.
     3. Once downloaded, unzip the VM and import on **VirtualBox** the **WinDev####Eval.ova** file, but do not start it up yet.
     4. Once imported, it has 8GB by default but can run with 4GB or 2GB and it can also run with 2 CPUs. If the VMs run slow, it may be due to not enough free RAM on your host.
-3. Download and install **Ubuntu Server** into a new VM:
+3. Download and install **Ubuntu Server** into a new **VM**:
     1. Download the **Ubuntu Server 22.04.2** installer ISO (https://releases.ubuntu.com/22.04.1/ubuntu-22.04.1-live-server-amd64.iso).
         1. **NOTE:** The **Server version of Ubuntu** comes preinstalled with necessary packages. If you choose the Desktop flavor, you will have issues, and you are wasting unnecessary resources.
-    2. Once downloaded, create a new VM in **VirtualBox Manager** with the
-    following specs:
-        1. Use the downloaded ISO as the installer image.
-        2. Customize Hardware:
-            1. **2 CPU cores**
-            2. **2GB RAM**
-            3. **14GB Disk size**
-        3. Start the VM.
+    2. Before create the **VM** lets create the **NAT Network** the will be used by it:
+        1. On **VirtualBox Manager** go to **File > Preferences**:
+            1. On **Network** click on **Adds new NAT network**.
+            2. Click on **Edits selected NAT network**.
+                1. (check) **Enable Network**
+                2. **Network Name**: NatNetwork
+                3. **Network CIDR**: 10.0.2.0/24
+                4. **Network Options**: (check) Supports DHCP
+                5. Click on **Port Forwarding**:
+                    - **Name:** SSH
+                    - **Protocol:** TCP
+                    - **Host IP:** 127.0.0.1
+                    - **Host Port:** 2200
+                    - **Guest IP:** 10.0.2.4
+                    - **Guest Port:** 22
+                    - **NOTE:** The **Port Forwarding** will be used to connect the **Host Machine (127.0.0.1:2200)** to the **VM (10.0.2.4:22)** by **SSH**.
+    3. Once downloaded, create a new **VM** in **VirtualBox Manager** with the following specs:
+        1. Customize Hardware:
+            1. **Memory size:** 2GB RAM
+            2. Create a **Virtual HD > VDI > Dynamic > Disk size: 14GB**
+            3. **Processors:** 2 CPUs
+            4. **Network Adapter**:
+                - **Attached to:** NAT Network
+                - **Name:** NatNetwork
+        2. Start the **VM**.
+        3. Use the **downloaded ISO** as the installer image.
         4. During OS install, leave defaults unless otherwise specified:
             1. Use Tab to navigate, Space to check boxes, Enter to confirm.
-            2. Choose type of install:
+            2. **Installer update available**:
+                1. Continue without updating.
+            3. Chose **Keyboard configuration**.
+            4. Choose **type of install**:
                 1. (check) **Ubuntu Server**.
-            3. When you get to **Network connections** section, we need to take a few steps to set a static IP address for this VM so that it doesn’t change throughout the lab or beyond it.
-                1. Find out the gateway IP of your **VirtualBox NAT Network**:
-                    1. In **Oracle VM VirtualBox**, click on **File > Host Network Manager**.
-                    2. Click on **Create**.
-                    3. On Adapter tab select **Configure Adapter Manually**.
-                    4. On DHCP Server **check Enable Server and copy Server Address**.
-                2. Now, back in the Ubuntu installer, let’s **change the interface from DHCPv4 to Manual**:
-                    1. On Network connection click **enp0s3 > Edit IPv4**
+            5. On **Network connections** section, we need to take a few steps to set a **static IP address** for this **VM** so that it doesn’t change throughout the lab or beyond it.
+                2. **Change the interface from DHCPv4 to Manual**:
+                    1. Click on **enp0s3 > Edit IPv4**
                     2. **IPv4 Method:** Manual
-                    3. Use the gateway IP from the previous step d., but **adding the /24 to subnet IP**. The Address gets copied from what was previously assigned via DHCP:
+                    3. Use the Network CIDR of the NAT Network created before:
                         - **IPv4 Methos:** Manual
                         - **Subnet:** 10.0.2.0/24
                         - **Address:** 10.0.2.4
@@ -51,35 +67,35 @@
                       **NAME** &emsp; **TYPE** &emsp;   **NOTES**   <br/>
                         enp0s3 &ensp; eth  &emsp;&emsp;   -         <br/>
                         static &emsp; 10.0.2.4/24
-                    5. **NOTE:** Write down the Linux VM’s IP address because you will need it multiple times throughout this guide.
+                    5. **NOTE:** Write down the **Linux VM’s IP address** because you will need it multiple times throughout this guide.
                     6. Hit **Done**.
-            4. **Configure Proxy**:
+            6. **Configure Proxy**:
                 1. Leave empty.
-            5. **Configure Ubuntu archive mirror**:
+            7. **Configure Ubuntu archive mirror**:
                 1. Leave default.
-            6. **Checking for installer update**:
+            8. **Checking for installer update**:
                 1. Wait or hit Continue without updating.
-            7. **Guided storage configuration**:
+            9. **Guided storage configuration**:
                 1. (check) **Use an entire disk**.
                 2. (check) **Set up this disk as an LVM group**.
                 3. Hit **Done**.
-            8. **Storage configuration**:
+            10. **Storage configuration**:
                 1. Hit **Done**.
-            9. **Profile setup**:
+            11. **Profile setup**:
                 1. **Your name:** user
                 2. **Your server’s name:** attack
                 3. **Username:** user
                 4. **Password:** your_password
                 5. Hit **Done**.
-            10. **Upgrade to Ubuntu Pro**:
+            12. **Upgrade to Ubuntu Pro**:
                 1. (check) **Skip for now**.
                 2. Hit **Contitue**.
-            11. **SSH Setup**:
+            13. **SSH Setup**:
                 1. (check) **Install OpenSSH server**.
                 2. **Import SSH identity:** No
                 3. Hit **Done**.
-            12. Continue installing OS until show **Install complete!**
-            13. Hit Enter on **Cancel update and reboot**.
+            14. Continue installing OS until show **Install complete!**
+            15. Hit Enter on **Cancel update and reboot**.
                 1. If it hangs on removing the CDROM just press Enter.
     3. After the reboot, let’s perform a quick connectivity check.
         1. Logon with the credentials we defined during install:
