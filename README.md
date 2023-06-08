@@ -41,7 +41,7 @@ The procedures to build this Lab can be found [here](https://github.com/robsann/
 ### LimaCharlie Processes showing the processes running on the Windows Machine including the payload `CURLY_DRAWER.exe`
 <img src="images/4-LC_processes.png" title="Windows Processes"/>
 
-## LSASS Access detection
+## LSASS Access event, rule creation, and detection
 
 ### LimaCharlie Timeline showing LSASS access event
 <img src="images/5a-LC_lsass_access_event.png" title="LSASS Access Event"/>
@@ -52,7 +52,7 @@ The procedures to build this Lab can be found [here](https://github.com/robsann/
 ### LimaCharlie Detections showing LSASS access detected by custom rule created
 <img src="images/5c-LC_lsass_access_detected.png" title="LSASS Access Detected"/>
 
-## Shadows Copies deletion detection
+## Shadows Copies deletion event, rule creation, and detection
 
 ### LimaCharlie Timeline showing delete Shadows Copies event
 <img src="images/6a-LC_delete_shadows_event.png" title="Delete Shadows Copie Event"/>
