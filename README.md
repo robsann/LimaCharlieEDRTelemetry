@@ -75,7 +75,7 @@ VMs can communicate with each other, with the host, and with the Internet, and t
 ### 4.3 - LimaCharlie Detections showing delete Shadows Copies detected by custom rule created
 <img src="images/4.3-LC_delete_shadows_detected.png" title="Delete Shadows Copie Detected"/>
 
-## 5 - Rules pre-loaded on LimaCharlie
+## 5 - Rules pre-loaded on LimaCharlie triggered by Sliver C2 activity
 
 ### 5.1 - LimaCharlie Detections showing Sigma rule at category Non Interactive PowerShell Process Spawned
 - Author: Roberto Rodriguez @Cyb3rWard0g (rule), oscd.community (improvements)
