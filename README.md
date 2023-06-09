@@ -14,7 +14,7 @@ The procedures to build this Lab can be found [here](https://github.com/robsann/
 
 ## VirtualBox NAT Network Diagram
 <img src="images/LimaCharlie_diagram.png" title="Virtual Network Diagram"/>
-<br/><br/>
+
 VMs can communicate with each other, with the host, and with the Internet, and the host can communicate with the VMs through port forwarding.
 
 # Highlights
