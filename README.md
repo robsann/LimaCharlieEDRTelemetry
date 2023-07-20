@@ -6,9 +6,9 @@
     - Ubuntu Server (Attack) with Sliver installed, a Command & Control (C2) framework by BishopFox.
 - Generated C2 payload on Attack Machine, executed the payload on Target Machine, and started C2 session on Attack Machine.
 - Used C2 session to perform two attacks on Target Machine:
-    - LSASS access (credentials stealing)
+    - LSASS access (credentials stealing).
     - Shadow Copies deletion using vssadmin.exe (used in Ransomware attacks).
-- Created Detection & Response Rules in LimaCharlie (EDR) to detect the two previous attacks using the telemetry generated and tested the rules by performing the attacks again.
+- Created Detection & Response Rules in LimaCharlie (EDR) to detect the two previous attacks using the telemetry generated and tested the rules by repeating the attacks.
 
 The procedures to build this Lab can be found [here](https://github.com/robsann/LimaCharlieEDRTelemetry/blob/main/procedure.md) and it was adapted from [Eric Capuano](https://blog.ecapuano.com/p/so-you-want-to-be-a-soc-analyst-intro).
 
