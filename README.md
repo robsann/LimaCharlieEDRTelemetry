@@ -26,7 +26,6 @@ The configuration of the NAT Network used and the Port Forwarding Rule created t
 ### IP Addresses
 <img src="images/ip_addresses.png" title="IP Addresses"/>
 
-
 # Highlights
 
 ## 1 - Windows 11 Setup
