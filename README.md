@@ -21,10 +21,10 @@ The procedures to build this Lab can be found [here](https://github.com/robsann/
 ### VirtualBox NAT Network
 The configuration of the NAT Network used and the Port Forwarding Rule created to give access to the Ubuntu Server through SSH from the host machine. On NAT Network, the virtual machines can communicate with each other and the host machine and access the Internet through the host gateway. In contrast, the host can only communicate with the virtual machines through port forwarding.
 
-<img src="images/virtualbox_nat_network.png" title="NAT Network"/>
+<img src="images/virtualbox_nat_network.png" title="VirtualBox NAT Network"/>
 
 ### IP Addresses
-<img src="images/network_config.png" title="Network Configuration"/>
+<img src="images/ip_addresses.png" title="IP Addresses"/>
 
 
 # Highlights
