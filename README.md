@@ -19,8 +19,7 @@ The procedures to build this Lab can be found [here](https://github.com/robsann/
 <img src="images/LimaCharlie_diagram.png" title="Virtual Network Diagram"/>
 
 ### VirtualBox NAT Network
-The configuration of the NAT Network used and the Port Forwarding Rule created to give access to the Ubuntu Server through SSH from the host machine. On NAT Network, the virtual machines can communicate with each other and the host machine and access the Internet through the host gateway. In contrast, the host machine can communicate with the virtual machines only through port forwarding.
-
+The configuration of the NAT Network used and the Port Forwarding Rule created to give access to the Ubuntu Server through SSH from the host machine. On NAT Network, the virtual machines can communicate with each other and the host machine and access the Internet through the host gateway. In contrast, the host can only communicate with the virtual machines through port forwarding.
 
 <img src="images/virtualbox_nat_network.png" title="NAT Network"/>
 
