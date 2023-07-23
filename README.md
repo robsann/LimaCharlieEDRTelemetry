@@ -27,7 +27,6 @@ The configuration of the NAT Network used and the Port Forwarding Rule created t
 <img src="images/ip_addresses.png" title="IP Addresses"/>
 
 
-
 # Highlights
 
 ## 1 - Windows 11 Setup
@@ -67,30 +66,34 @@ In the Processes section on LimaCharlie, it can be seen the processes running on
 ## 3 - LSASS Access Attack (Credential Stealing)
 
 ### 3.1 - LSASS Access Event
+The timeline on LimaCharlie displays an event that was logged when the command `procdump -n lsass.exe -s lsass.dmp` was executed on the Sliver C2 session. This command was used to dump the `lsass.exe` process from memory. According to the event properties, the `CURLY_DRAWER.exe` file is where this process originated from, and `lsass.exe` is the file it is targeting.
 
 <img src="images/3.1-LC_lsass_access_event.png" title="LSASS Access Event"/>
 
 ### 3.2 - LSASS Access Custom Detect & Respond Rule
+A custom D&R rule named LSASS Accessed for detecting LSASS access attacks was created based on the data collected from the previously shown event logged during the LSASS access attack. This rule detects when the `lsass.exe` file is being used as the target of a process and generates an entry in the Detections section on LimaCharlie under the category LSASS access.
 
 <img src="images/3.2-LC_lsass_access_rule.png" title="LSASS Access Rule"/>
 
 ### 3.3 - LSASS Access Detection
-LimaCharlie Detections showing LSASS access detected by the custom rule created.
+The LimaCharlie Detections showing LSASS access attacked detected by the custom rule created in the previous section that belongs to the LSASS access category and was named LSASS Accessed.
 
 <img src="images/3.3-LC_lsass_access_detected.png" title="LSASS Access Detected"/>
 
 ## 4 - Shadows Copies Deletion Attack
 
 ### 4.1 - Shadows Copies Deletion Event
+On LimaCharlie's timeline, an event was logged when the command `vssadmin delete shadows /all` was carried out on the Sliver C2 session system shell. This particular command is used to delete Volume Shadow Copies that are typically used in ransomware attacks. The event properties state that the `powershell.exe` executed the command `"C:\Windows\system32\vssadmin.exe" delete shadows /all` to delete any Volume Shadow Copies that may exist.
 
 <img src="images/4.1-LC_delete_shadows_event.png" title="Delete Shadows Copie Event"/>
 
 ### 4.2 - Shadows Copies Deletion Custom Detect & Respond Rule
+Based on data obtained from a logged event during a Shadow Copies Deletion attack, a custom D&R rule called vss_deletion_kill_it was created. This rule identifies when the Windows vssadmin utility on the monitored machine executes the command `"C:\Windows\system32\vssadmin.exe" delete shadows /all`. If this attack is identified, an entry is generated in the Detections section of LimaCharlie under the category vss_deletion_kill_it, and the connection with the remote machine conducting the attack is terminated.
 
 <img src="images/4.2-LC_delete_shadows_rule.png" title="Delete Shadows Copie Rule"/>
 
 ### 4.3 - Shadows Copies Deletion Detection
-LimaCharlie Detections showing delete Shadows Copies detected by the custom rule created.
+The entry in LimaCharlie Detections shows the detection of the Shadow Copies Deletion attack by the custom rule created in the previous section. As a response, the rule terminated the connection with the attacker machine. The custom rule belongs to the vss_deletion_kill_it category and is named vss_deletion_kill_it.
 
 <img src="images/4.3-LC_delete_shadows_detected.png" title="Delete Shadows Copie Detected"/>
 
