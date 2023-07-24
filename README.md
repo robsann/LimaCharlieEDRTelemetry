@@ -10,7 +10,7 @@ In this lab, the LimaCharlie's detection and response (D&R) capabilities were ex
 - Used the Sliver C2 session to perform two attacks on the target machine:
     - LSASS access (credential stealing attack).
     - Volume shadow copies deletion using vssadmin Windows utility (used in ransomware attacks).
-- D&R rules were created in the LimaCharlie platform to detect the two previous attacks using the telemetry generated and tested the rules by repeating the attacks.
+- D&R rules were created in the LimaCharlie platform to detect the two previous attacks and take action. The rules were tested by repeating the attacks.
 
 ## Procedure
 The procedures to build this lab can be found [here](https://github.com/robsann/LimaCharlieEDRTelemetry/blob/main/procedure.md), and it was adapted from [Eric Capuano](https://blog.ecapuano.com/p/so-you-want-to-be-a-soc-analyst-intro).
