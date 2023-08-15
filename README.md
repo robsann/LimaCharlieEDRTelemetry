@@ -14,6 +14,7 @@ In this lab, the LimaCharlie's detection and response (D&R) capabilities were ex
 
 ## Tools
 - **Kali Linux**
+    - **LimaCharlie web platform** 
     - **VirtualBox**
         - **Windows 11**
             - **LimaCharlie sensor**
@@ -21,7 +22,6 @@ In this lab, the LimaCharlie's detection and response (D&R) capabilities were ex
             - **Windows Defender disabled**
         - **Ubuntu Server**
             - **Sliver C2 framework**
-    - **LimaCharlie web platform**
 
 ## Procedure
 The procedures to build this lab can be found [here](https://github.com/robsann/LimaCharlieEDRTelemetry/blob/main/procedure.md), and it was adapted from [Eric Capuano](https://blog.ecapuano.com/p/so-you-want-to-be-a-soc-analyst-intro).
