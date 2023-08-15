@@ -12,6 +12,16 @@ In this lab, the LimaCharlie's detection and response (D&R) capabilities were ex
     - Volume shadow copies deletion using vssadmin Windows utility (used in ransomware attacks).
 - D&R rules were created in the LimaCharlie platform to detect the two previous attacks and take action. The rules were tested by repeating the attacks.
 
+## Tools
+- **Kali Linux**
+    - **VirtualBox**
+        - **Windows 11**
+            - **LimaCharlie sensor**
+            - **Sysmon**
+            - **Windows Defender disabled**
+        - **Ubuntu Server**
+            - **Sliver C2 framework**
+
 ## Procedure
 The procedures to build this lab can be found [here](https://github.com/robsann/LimaCharlieEDRTelemetry/blob/main/procedure.md), and it was adapted from [Eric Capuano](https://blog.ecapuano.com/p/so-you-want-to-be-a-soc-analyst-intro).
 
