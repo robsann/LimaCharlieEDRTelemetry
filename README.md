@@ -23,7 +23,9 @@ The procedures to build this lab can be found [here](https://github.com/robsann/
 
 ## Diagram
 
-<img src="images/LimaCharlie_diagram.png" title="Virtual Network Diagram"/>
+<div align="center">
+<img src="images/LimaCharlie_diagram.png" width="60%">
+</div>
 
 
 ## VirtualBox NAT Network
@@ -95,9 +97,6 @@ In the Processes section of LimaCharlie, you can observe the processes running o
 <img src="images/2.4-LC_processes.png" title="Windows Processes"/>
 </span>
 </details>
-
-
------------------------------------------------------------------------------------------------------
 
 
 <h1 align="center" id="sec-test">Security Tests</h1>
