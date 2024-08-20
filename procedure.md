@@ -41,29 +41,19 @@ In this lab, We will configure on VirtualBox a virtual network with the followin
     - **Windows 11 VM** (Target)
         - Adapter 1: NAT - 10.0.2.15
         - Adapter 2: Internal Network (intnet2) - 172.16.2.3
+
+
+**NAT Adapter:** The NAT (Network Address Translation) adapter on VirtualBox allows each virtual machine to have its own isolated network with access only to the host machine and the internet, but no communication with other virtual machines.
+
+**NAT Network:** NAT Network on VirtualBox allows virtual machines to access the internet, the host machine, and communicate with each other using Network Address Translation (NAT) technology. This enables seamless connectivity and communication between virtual machines and the external network.
+
 </span>
 </details>
 
-<details>
-<summary>
-<h3>Create an Internal Virtual Network with DHCP Server on VirtualBox</h3>
-</summary>
-<span style="color:gray">
-
-VirtualBox's internal virtual network allows virtual machines to communicate with each other using an isolated network.
-
-Then, set up a virtual network (intnet2) on VirtualBox with a DHCP server at address `172.16.2.1` and range `172.16.2.2-254` using the command below on the host:
-
-```bash
-$ VBoxManage dhcpserver add --network=intnet2 --server-ip=172.16.2.1 --netmask=255.255.255.0 --lower-ip=172.16.2.2 --upper-ip=172.16.2.254 --enable
-$ VBoxManage list dhcpservers
-```
-</span>
-</details>
 
 <details>
 <summary>
-<h3>Create a NAT Network with DHCP server on VirtualBox</h3>
+<h3>NAT Network with DHCP Server Configuration</h3>
 </summary>
 <span style="color:gray">
 
